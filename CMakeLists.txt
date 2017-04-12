@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 2.8)
+project( tracker )
+SET (CMAKE_CXX_COMPILER             "/usr/bin/g++")
+SET (CMAKE_CXX_FLAGS                "-Wall -g -O3 -std=c++11 -fopenmp")
+SET (CMAKE_CXX_FLAGS_DEBUG          "-g")
+SET (CMAKE_CXX_FLAGS_MINSIZEREL     "-Os -DNDEBUG")
+SET (CMAKE_CXX_FLAGS_RELEASE        "-O4 -DNDEBUG")
+SET (CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g")
+find_package( OpenCV REQUIRED)
+
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+include_directories( "src/likelihood/" )
+include_directories( "src/motion/" )
+include_directories( "src/features/" )
+include_directories( "src/utils/" )
+include_directories( "libs/LBP/" )
+include_directories( "/usr/include/eigen3/" )
+#include_directories( "/usr/local/include/eigen3/" )
+
+add_executable( test_lbp_hmc src/test_classifier.cpp src/motion/sampler.cpp src/utils/utils.cpp src/utils/c_utils.cpp src/utils/image_generator.cpp src/features/local_binary_pattern.cpp src/likelihood/logistic_regression.cpp src/likelihood/hmc.cpp src/libs/LBP/LBP.cpp) 
+target_link_libraries( test_lbp_hmc ${OpenCV_LIBS})
+target_compile_definitions( test_lbp_hmc PRIVATE -DWITH_LBP -DWITH_HMC)
+
+add_executable( test_lbp_lr src/test_classifier.cpp src/motion/sampler.cpp src/utils/utils.cpp src/utils/c_utils.cpp src/utils/image_generator.cpp src/features/local_binary_pattern.cpp src/likelihood/logistic_regression.cpp src/libs/LBP/LBP.cpp) 
+target_link_libraries( test_lbp_lr ${OpenCV_LIBS})
+target_compile_definitions( test_lbp_lr PRIVATE -DWITH_LBP -DWITH_LR)
+

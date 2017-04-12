@@ -1,0 +1,1 @@
+../build/test_lbp_lr -img data/$1/$2/00000001.jpg -gt data/$1/$2/groundtruth.txt -ntrain $3 -npredict $4
