@@ -175,6 +175,10 @@ VectorXd Hamiltonian_MC::predict(MatrixXd &X_test, bool prob, int samples){
 				MVNGaussian MVG= MVNGaussian(temp_weights);
 				MatrixXd covariate = MVG.getCov();
 				predict = cumGauss(this->mean_weights, X_test, covariate);
+
+				predict.noalias() = predict.unaryExpr([](double elem){
+    				return (elem > 0.5) ? 1.0 : 0.0;
+				});
 			}
 			else{
 				predict = temp_predict.colwise().mean();

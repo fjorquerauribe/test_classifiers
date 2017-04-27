@@ -54,7 +54,7 @@ void TestClassifier::run(){
 #endif
 
 #ifdef WITH_HMC
-			VectorXd phi = hmc.predict(features, true, 100);
+			VectorXd phi = hmc.predict(features, true, 10);
 #endif
 			cout << "------------------------------------------------------------------------------------" << endl;
 			cout << "Frame: " << i << endl;
