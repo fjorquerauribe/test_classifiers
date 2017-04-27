@@ -14,10 +14,10 @@ include_directories( "src/motion/" )
 include_directories( "src/features/" )
 include_directories( "src/utils/" )
 include_directories( "libs/LBP/" )
-include_directories( "/usr/include/eigen3/" )
-#include_directories( "/usr/local/include/eigen3/" )
+#include_directories( "/usr/include/eigen3/" )
+include_directories( "/usr/local/include/eigen3/" )
 
-add_executable( test_lbp_hmc src/test_classifier.cpp src/motion/sampler.cpp src/utils/utils.cpp src/utils/c_utils.cpp src/utils/image_generator.cpp src/features/local_binary_pattern.cpp src/likelihood/logistic_regression.cpp src/likelihood/hmc.cpp src/libs/LBP/LBP.cpp) 
+add_executable( test_lbp_hmc src/test_classifier.cpp src/motion/sampler.cpp src/utils/utils.cpp src/utils/c_utils.cpp src/utils/image_generator.cpp src/features/local_binary_pattern.cpp src/likelihood/logistic_regression.cpp src/likelihood/multivariate_gaussian.cpp src/likelihood/hmc.cpp src/libs/LBP/LBP.cpp) 
 target_link_libraries( test_lbp_hmc ${OpenCV_LIBS})
 target_compile_definitions( test_lbp_hmc PRIVATE -DWITH_LBP -DWITH_HMC)
 

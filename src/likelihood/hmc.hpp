@@ -14,6 +14,7 @@
 #include <Eigen/Dense>
 #include <Eigen/Cholesky>
 #include "logistic_regression.hpp"
+#include "multivariate_gaussian.hpp"
 
 using namespace Eigen;
 using namespace std;
@@ -24,30 +25,27 @@ class Hamiltonian_MC
 public:
 	Hamiltonian_MC();
 	Hamiltonian_MC( MatrixXd &_X, VectorXd &_Y, double _lamda);
-	Hamiltonian_MC( MatrixXd &_X,  MatrixXd &_data);
 	void run(int _iterations, double _step_size, int _num_step);
-	VectorXd simulation(VectorXd &_initial_x, VectorXd &_old_x);
-	VectorXd predict(MatrixXd &_X_test, bool prob = false);
+	VectorXd gradient(VectorXd &W);
+	double logPosterior(VectorXd &W);
+	VectorXd predict(MatrixXd &_X_test, bool prob = false, int samples = 0);
 	MatrixXd get_weights();
-	virtual VectorXd gradient(VectorXd &_W, MatrixXd &);
-	virtual double logPosterior(VectorXd &_W, MatrixXd &_data);
-	virtual VectorXd gradient(VectorXd &_W);
-	virtual double logPosterior(VectorXd &_W);
+	void set_weights(VectorXd &_weights);
 
 private:
-	void leap_Frog(VectorXd &_x0, VectorXd &_v0, VectorXd &x, VectorXd &v);
-	double hamiltonian(VectorXd &_position, VectorXd &_velocity);
-	double kinetic_energy(VectorXd &_velocity);
+	double avsigmaGauss(double mean, double var);
+	VectorXd cumGauss(VectorXd &w, MatrixXd &phi, MatrixXd &Smat);
+	VectorXd random_generator(int dim);
+	double random_uniform();
 	bool init, init_2;
 	double step_size;
 	int num_step, dim;
  	MatrixXd weights;
- 	mt19937 generator;
- 	double lambda;
+ 	double lambda, old_energy;
  	MatrixXd *X_train;
  	MatrixXd data;
  	VectorXd *Y_train;
- 	VectorXd mean_weights;
+ 	VectorXd mean_weights, old_gradient, new_gradient;
  	LogisticRegression logistic_regression;
 };
 
